@@ -10,9 +10,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
+
+    ArrayList<String> photoSources = new ArrayList<String>();
+    ArrayList<String> photoNames = new ArrayList<String>();
 
 	public class DownloadWebTask extends AsyncTask<String, Void, String> {
 
@@ -69,6 +75,28 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.i("Contents of the web", result);
+        Pattern p = Pattern.compile("src=\"(http://cdn.posh24.com/images/:profile.*?)\"");
+        Matcher m = p.matcher(result);
+
+        while (m.find()) {
+            photoSources.add(m.group(1));
+        }
+        /*
+        for (String photoSource : photoSources) {
+        	Log.i("photoSrc", photoSource);
+        }
+        */
+
+        p = Pattern.compile("alt=\"(.*?)\"");
+        m = p.matcher(result);
+
+        while (m.find()) {
+            photoNames.add(m.group(1));
+        }
+        /*
+        for (String photoName : photoNames) {
+        	Log.i("photoName", photoName);
+        } 
+        */       
     }
 }
