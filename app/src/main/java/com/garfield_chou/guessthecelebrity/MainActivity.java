@@ -1,10 +1,13 @@
 package com.garfield_chou.guessthecelebrity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +22,28 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> photoSources = new ArrayList<String>();
     ArrayList<String> photoNames = new ArrayList<String>();
+    ImageView imageView;
+
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+    	@Override
+    	protected Bitmap doInBackground (String... urls) {
+
+    		URL url = null;
+    		Bitmap bitmap = null;
+
+    		try {
+    			url = new URL(urls[0]);
+    			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    			InputStream inputStream = connection.getInputStream();
+    			bitmap = BitmapFactory.decodeStream(inputStream);
+    		}
+            catch (Exception e) {
+            	e.printStackTrace();
+            }
+            return bitmap;
+    	}
+    }
 
 	public class DownloadWebTask extends AsyncTask<String, Void, String> {
 
@@ -53,8 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseName (View view) {
 
-        Log.i("button tapped", view.getTag().toString());
+    	DownloadImageTask task = new DownloadImageTask();
+    	Bitmap bitmap = null;
 
+    	try {
+    		bitmap = task.execute(photoSources.get(94)).get();
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	imageView.setImageBitmap(bitmap);
+        Log.i("button tapped", view.getTag().toString());
     }
 
     @Override
@@ -97,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         for (String photoName : photoNames) {
         	Log.i("photoName", photoName);
         } 
-        */       
+        */
+        imageView = (ImageView) findViewById(R.id.imageView);
     }
 }
