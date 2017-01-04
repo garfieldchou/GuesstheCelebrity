@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InterfaceAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,12 +27,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> photoSources = new ArrayList<String>();
     ArrayList<String> photoNames = new ArrayList<String>();
     ImageView imageView;
+	int correctButtonIdx, correctAnswerIdx;
 
     public void generateQuestion () {
 
 		Random rand = new Random();
-		int correctAnswerIdx = rand.nextInt(100);
-		int correctButtonIdx = rand.nextInt(4);
+		correctAnswerIdx = rand.nextInt(100);
+		correctButtonIdx = rand.nextInt(4);
 
 		DownloadImageTask task = new DownloadImageTask();
 		Bitmap bitmap = null;
@@ -110,7 +113,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseName (View view) {
 
-        Log.i("button tapped", view.getTag().toString());
+		Log.i("button tapped", view.getTag().toString());
+		if (view.getTag().toString().equals(Integer.toString(correctButtonIdx))) {
+			Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			Toast.makeText(MainActivity.this, "Wrong! it was " + photoNames.get(correctAnswerIdx), Toast.LENGTH_SHORT).show();
+		}
+		generateQuestion();
+
     }
 
     @Override
