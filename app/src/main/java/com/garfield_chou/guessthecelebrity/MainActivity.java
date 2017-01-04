@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +26,37 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> photoNames = new ArrayList<String>();
     ImageView imageView;
 
-    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public void generateQuestion () {
+
+		Random rand = new Random();
+		int correctAnswerIdx = rand.nextInt(100);
+		int correctButtonIdx = rand.nextInt(4);
+
+		DownloadImageTask task = new DownloadImageTask();
+		Bitmap bitmap = null;
+
+		try {
+			bitmap = task.execute(photoSources.get(correctAnswerIdx)).get();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		imageView.setImageBitmap(bitmap);
+
+		int correctButtonId = getResources().getIdentifier("nameButton" + correctButtonIdx, "id", getPackageName());
+		Button correctButton = (Button)findViewById(correctButtonId);
+		correctButton.setText(photoNames.get(correctAnswerIdx));
+
+		for (int i = 0; i < 4; i++) {
+			if (correctButtonIdx == i) continue;
+			int wrongButtonId = getResources().getIdentifier("nameButton" + i, "id", getPackageName());
+			Button wrongButton = (Button)findViewById(wrongButtonId);
+			wrongButton.setText(photoNames.get(rand.nextInt(100)));
+		}
+
+	}
+
+	public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     	@Override
     	protected Bitmap doInBackground (String... urls) {
@@ -78,16 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseName (View view) {
 
-    	DownloadImageTask task = new DownloadImageTask();
-    	Bitmap bitmap = null;
-
-    	try {
-    		bitmap = task.execute(photoSources.get(94)).get();
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    	imageView.setImageBitmap(bitmap);
         Log.i("button tapped", view.getTag().toString());
     }
 
@@ -133,5 +155,6 @@ public class MainActivity extends AppCompatActivity {
         } 
         */
         imageView = (ImageView) findViewById(R.id.imageView);
+		generateQuestion();
     }
 }
