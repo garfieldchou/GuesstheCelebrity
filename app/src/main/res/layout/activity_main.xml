@@ -24,7 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/nameButton1"
             android:layout_centerHorizontal="true"
-            android:id="@+id/nameButton0" />
+            android:id="@+id/nameButton0"
+            android:onClick="chooseName"
+            android:tag="0" />
 
         <Button
             android:text="Button"
@@ -32,7 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/nameButton2"
             android:layout_centerHorizontal="true"
-            android:id="@+id/nameButton1" />
+            android:id="@+id/nameButton1"
+            android:onClick="chooseName"
+            android:tag="1" />
 
         <Button
             android:text="Button"
@@ -41,7 +45,9 @@
             android:id="@+id/nameButton2"
             android:layout_above="@+id/nameButton3"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:onClick="chooseName"
+            android:tag="2" />
 
         <Button
             android:text="Button"
@@ -50,7 +56,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/nameButton3" />
+            android:id="@+id/nameButton3"
+            android:onClick="chooseName"
+            android:tag="3" />
     </LinearLayout>
 
     <ImageView
