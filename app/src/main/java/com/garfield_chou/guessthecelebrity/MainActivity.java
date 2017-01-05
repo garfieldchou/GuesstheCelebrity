@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -25,8 +26,14 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> celebURLs = new ArrayList<String>();
     ArrayList<String> celebNames = new ArrayList<String>();
     int chosenCeleb = 0;
+    int locationOfCorrectAnswer = 0;
+    String[] answers = new String[4];
 
     ImageView imageView;
+    Button button0;
+    Button button1;
+    Button button2;
+    Button button3;
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
@@ -106,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageView = (ImageView) findViewById(R.id.imageView);
+        button0 = (Button) findViewById(R.id.button);
+        button1 = (Button) findViewById(R.id.button2);
+        button2 = (Button) findViewById(R.id.button3);
+        button3 = (Button) findViewById(R.id.button4);
 
         DownloadTask task = new DownloadTask();
         String result = null;
@@ -115,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             String[] splitResult = result.split("<div class=\"sidebarContainer\">");
 
-            Pattern p = Pattern.compile("src=\"(.*?)\"");
+            Pattern p = Pattern.compile("<img src=\"(.*?)\"");
             Matcher m = p.matcher(splitResult[0]);
 
             while (m.find()) {
@@ -139,6 +150,36 @@ public class MainActivity extends AppCompatActivity {
             celebImage = imageTask.execute(celebURLs.get(chosenCeleb)).get();
 
             imageView.setImageBitmap(celebImage);
+
+            locationOfCorrectAnswer = random.nextInt(4);
+
+            int incorrectAnswerLocation;
+
+            for (int i=0; i < 4 ; i++) {
+
+            	if (i == locationOfCorrectAnswer) {
+
+            		answers[i] = celebNames.get(chosenCeleb);
+
+            	} else {
+
+            		incorrectAnswerLocation = random.nextInt(celebURLs.size());
+
+            		while (incorrectAnswerLocation == chosenCeleb) {
+
+            			incorrectAnswerLocation = random.nextInt(celebURLs.size());
+
+            		}
+
+            		answers[i] = celebNames.get(incorrectAnswerLocation);
+
+            	}
+
+            	button0.setText(answers[0]);
+            	button1.setText(answers[1]);
+            	button2.setText(answers[2]);
+            	button3.setText(answers[3]);
+            }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
