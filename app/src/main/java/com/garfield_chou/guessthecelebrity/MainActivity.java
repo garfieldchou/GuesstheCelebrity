@@ -54,7 +54,14 @@ public class MainActivity extends AppCompatActivity {
 			if (correctButtonIdx == i) continue;
 			int wrongButtonId = getResources().getIdentifier("nameButton" + i, "id", getPackageName());
 			Button wrongButton = (Button)findViewById(wrongButtonId);
-			wrongButton.setText(photoNames.get(rand.nextInt(100)));
+
+			int wrongAnswerIdx;
+			do {
+
+				wrongAnswerIdx = rand.nextInt(100);
+
+			} while (correctAnswerIdx == wrongAnswerIdx);
+			wrongButton.setText(photoNames.get(wrongAnswerIdx));
 		}
 
 	}
