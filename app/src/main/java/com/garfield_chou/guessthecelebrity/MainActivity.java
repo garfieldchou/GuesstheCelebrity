@@ -122,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
 
 		Log.i("button tapped", view.getTag().toString());
 		if (view.getTag().toString().equals(Integer.toString(correctButtonIdx))) {
-			Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_LONG).show();
 		}
 		else {
-			Toast.makeText(MainActivity.this, "Wrong! it was " + photoNames.get(correctAnswerIdx), Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Wrong! it was " + photoNames.get(correctAnswerIdx), Toast.LENGTH_LONG).show();
 		}
 		generateQuestion();
 
